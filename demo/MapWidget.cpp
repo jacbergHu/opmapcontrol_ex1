@@ -70,6 +70,10 @@ static MapType_Data g_arrMapType[] = {
     MAPTYPE_STRUCT(YandexMapRu),
     MAPTYPE_STRUCT(Statkart_Topo2),
 
+    MAPTYPE_STRUCT(AMap_Normal),// vector street
+    MAPTYPE_STRUCT(AMap_Satellite),// satallite
+    MAPTYPE_STRUCT(AMap_Hybrid),// satallite and road grid
+
     {"NULL", -1}
 };
 
@@ -82,13 +86,13 @@ char* getMapName_fromID(core::MapType::Types t) {
         }
 
         if(g_arrMapType[i].typeID < 0) {
-            return NULL;
+            return nullptr;
         }
 
         i ++;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -172,15 +176,13 @@ core::MapType::Types MapType_Dialog::getMapType(void) {
     return (core::MapType::Types) typeID;
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 WaypointEdit_Dialog::WaypointEdit_Dialog(QWidget* parent) : QDialog(parent) {
     this->setWindowTitle("Waypoints Edit");
 
-    m_wpMap  = NULL;
+    m_wpMap  = nullptr;
     m_wpIdx  = 0;
 
     clCL1 = QColor(0x00, 0x00, 0xFF);
@@ -288,7 +290,7 @@ int WaypointEdit_Dialog::setWaypoints_(int idx,
 }
 
 int WaypointEdit_Dialog::setTableItem(int ri, int ci, QString s) {
-    if(tableWaypoints->item(ri, ci) != NULL) {
+    if(tableWaypoints->item(ri, ci) != nullptr) {
         tableWaypoints->item(ri, ci)->setText(s);
     } else {
         QTableWidgetItem* item = new QTableWidgetItem();
@@ -429,7 +431,7 @@ void WaypointEdit_Dialog::act_cbHeightAltitude_clicked(bool s) {
 
 MapWidget::MapWidget(QWidget* parent) :
     mapcontrol::OPMapWidget(parent) {
-    m_conf = NULL;
+    m_conf = nullptr;
 
     configuration->SetAccessMode(core::AccessMode::CacheOnly);
     configuration->SetTileMemorySize(200);
@@ -466,7 +468,7 @@ MapWidget::~MapWidget() {
 void MapWidget::setConf(QSettings* conf) {
     m_conf = conf;
 
-    if(m_conf == NULL) {
+    if(m_conf == nullptr) {
         return;
     }
 
@@ -522,7 +524,7 @@ void MapWidget::setConf(QSettings* conf) {
 }
 
 void MapWidget::syncConf(void) {
-    if(m_conf == NULL) {
+    if(m_conf == nullptr) {
         return;
     }
 
@@ -710,7 +712,7 @@ void MapWidget::actMapType_SelectMap(void) {
         SetMapType(mt);
 
         // update settings
-        if(m_conf != NULL) {
+        if(m_conf != nullptr) {
             m_conf->setValue("mapWidget_mapType", (int)(mt));
             m_conf->sync();
         }

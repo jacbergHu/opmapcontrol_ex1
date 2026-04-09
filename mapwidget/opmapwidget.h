@@ -243,7 +243,41 @@ public:
      * @param config pointer to configuration classed to be used
      * @return
      */
-    OPMapWidget(QWidget* parent = 0, Configuration* config = new Configuration);
+    OPMapWidget(QWidget* parent = 0, Configuration* config = new Configuration) : QGraphicsView(parent),
+        configuration(config),
+        UAV(nullptr),
+        GPS(nullptr),
+        Home(nullptr),
+        followmouse(true),
+        compass(nullptr),
+        showuav(false),
+        showhome(false),
+        diagTimer(nullptr),
+        showDiag(false),
+        diagGraphItem(nullptr) {
+        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
+        core = new internals::Core;
+        map = new MapGraphicItem(core, config);
+        mscene.addItem(map);
+        this->setScene(&mscene);
+        this->adjustSize();
+
+        connect(map, SIGNAL(zoomChanged(double, double, double)), this, SIGNAL(zoomChanged(double, double, double)));
+        connect(map->core, SIGNAL(OnCurrentPositionChanged(internals::PointLatLng)), this, SIGNAL(OnCurrentPositionChanged(internals::PointLatLng)));
+        connect(map->core, SIGNAL(OnEmptyTileError(int, core::Point)), this, SIGNAL(OnEmptyTileError(int, core::Point)));
+        connect(map->core, SIGNAL(OnMapDrag()), this, SIGNAL(OnMapDrag()));
+        connect(map->core, SIGNAL(OnMapTypeChanged(MapType::Types)), this, SIGNAL(OnMapTypeChanged(MapType::Types)));
+        connect(map->core, SIGNAL(OnMapZoomChanged()), this, SIGNAL(OnMapZoomChanged()));
+        connect(map->core, SIGNAL(OnMapZoomChanged()), this, SLOT(emitMapZoomChanged()));
+        connect(map->core, SIGNAL(OnTileLoadComplete()), this, SIGNAL(OnTileLoadComplete()));
+        connect(map->core, SIGNAL(OnTileLoadStart()), this, SIGNAL(OnTileLoadStart()));
+        connect(map->core, SIGNAL(OnTilesStillToLoad(int)), this, SIGNAL(OnTilesStillToLoad(int)));
+
+        SetShowDiagnostics(showDiag);
+        this->setMouseTracking(followmouse);
+        SetShowCompass(true);
+    }
     virtual ~OPMapWidget();
 
     /**

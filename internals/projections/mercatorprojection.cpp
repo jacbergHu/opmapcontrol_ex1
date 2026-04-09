@@ -3,37 +3,35 @@
 *
 * @file       mercatorprojection.cpp
 * @author     The OpenPilot Team, http://www.openpilot.org Copyright (C) 2010.
-* @brief      
+* @brief
 * @see        The GNU Public License (GPL) Version 3
 * @defgroup   OPMapWidget
 * @{
-* 
+*
 *****************************************************************************/
-/* 
-* This program is free software; you can redistribute it and/or modify 
-* it under the terms of the GNU General Public License as published by 
-* the Free Software Foundation; either version 3 of the License, or 
+/*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3 of the License, or
 * (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful, but 
-* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-* or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+* or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 * for more details.
-* 
-* You should have received a copy of the GNU General Public License along 
-* with this program; if not, write to the Free Software Foundation, Inc., 
+*
+* You should have received a copy of the GNU General Public License along
+* with this program; if not, write to the Free Software Foundation, Inc.,
 * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 #include "mercatorprojection.h"
 #include <qmath.h>
- 
+
 namespace projections {
-MercatorProjection::MercatorProjection():MinLatitude(-85.05112878), MaxLatitude(85.05112878),MinLongitude(-177),
-MaxLongitude(177), tileSize(256, 256)
-{
+MercatorProjection::MercatorProjection(): MinLatitude(-85.05112878), MaxLatitude(85.05112878), MinLongitude(-177),
+    MaxLongitude(177), tileSize(256, 256) {
 }
-Point MercatorProjection::FromLatLngToPixel(double lat, double lng, const int &zoom)
-{
+Point MercatorProjection::FromLatLngToPixel(double lat, double lng, const int &zoom) {
     Point ret;// = Point.Empty;
 
     lat = Clip(lat, MinLatitude, MaxLatitude);
@@ -52,8 +50,7 @@ Point MercatorProjection::FromLatLngToPixel(double lat, double lng, const int &z
 
     return ret;
 }
-internals::PointLatLng MercatorProjection::FromPixelToLatLng(const int &x, const int &y, const int &zoom)
-{
+internals::PointLatLng MercatorProjection::FromPixelToLatLng(const int &x, const int &y, const int &zoom) {
     internals::PointLatLng ret;// = internals::PointLatLng.Empty;
 
     Size s = GetTileMatrixSizePixel(zoom);
@@ -68,31 +65,25 @@ internals::PointLatLng MercatorProjection::FromPixelToLatLng(const int &x, const
 
     return ret;
 }
-double MercatorProjection::Clip(const double &n, const double &minValue, const double &maxValue) const
-{
+double MercatorProjection::Clip(const double &n, const double &minValue, const double &maxValue) const {
     return qMin(qMax(n, minValue), maxValue);
 }
-Size MercatorProjection::TileSize() const
-{
+Size MercatorProjection::TileSize() const {
     return tileSize;
 }
-double MercatorProjection::Axis() const
-{
+double MercatorProjection::Axis() const {
     return 6378137;
 }
-double MercatorProjection::Flattening() const
-{
+double MercatorProjection::Flattening() const {
     return (1.0 / 298.257223563);
 }
-Size MercatorProjection::GetTileMatrixMaxXY(const int &zoom)
-{
-    Q_UNUSED(zoom);
+Size MercatorProjection::GetTileMatrixMaxXY(const int &zoom) {
+    Q_UNUSED(zoom)
     int xy = (1 << zoom);
     return  Size(xy - 1, xy - 1);
 }
-Size MercatorProjection::GetTileMatrixMinXY(const int &zoom)
-{
-    Q_UNUSED(zoom);
+Size MercatorProjection::GetTileMatrixMinXY(const int &zoom) {
+    Q_UNUSED(zoom)
     return Size(0, 0);
 }
 }

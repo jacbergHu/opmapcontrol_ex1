@@ -179,8 +179,6 @@ public:
     * @return
     */
     QString CacheLocation(){return core::Cache::Instance()->CacheLocation();}
-
-
 };
 }
 #endif // CONFIGURATION_H
