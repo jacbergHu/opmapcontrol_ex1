@@ -28,7 +28,7 @@ This program is a map widget which is based on opmapcontrol. We have fixed some 
 ## Screenshot:
 ![](https://github.com/jacbergHu/opmapcontrol_ex1/blob/main/images/opmapcontrol_1.png "Screenshot 1")
 
-![](https://github.com/jacbergHu/opmapcontrol_ex1/blob/main/images/opmapcontrol_2.png"Screenshot 2")
+![](https://github.com/jacbergHu/opmapcontrol_ex1/blob/main/images/opmapcontrol_2.png "Screenshot 2")
 
 ![](https://github.com/jacbergHu/opmapcontrol_ex1/blob/main/images/screenshot_01.png "Screenshot 3")
 
