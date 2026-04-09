@@ -174,8 +174,8 @@ void Core::run()
                                     {
                                         QWaitCondition wait;
                                         QMutex m;
-                                        m.lock();
-                                        wait.wait(&m,500);
+                                        QMutexLocker locker(&m); // 自动锁/解锁 绝对安全
+                                        wait.wait(&m, 500);
                                     }
                                 }
                             }
@@ -616,7 +616,6 @@ void Core::Drag(Point const& pt)
     }
 
     emit OnNeedInvalidation();
-
 
     emit OnMapDrag();
 

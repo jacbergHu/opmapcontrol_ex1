@@ -223,10 +223,13 @@ bool PureImageCache::PutImageToCache(const QByteArray &tile, const MapType::Type
 
 QByteArray PureImageCache::GetImageFromCache(MapType::Types type, Point pos, int zoom)
 {
-    lock.lockForRead();
+    QReadLocker locker(&lock);
+
     QByteArray ar;
-    if(gtilecache.isEmpty()|gtilecache.isNull())
+    if (gtilecache.isEmpty() || gtilecache.isNull())
+    {
         return ar;
+    }
 
     QString dir=gtilecache;
     Mcounter.lock();
@@ -258,13 +261,13 @@ QByteArray PureImageCache::GetImageFromCache(MapType::Types type, Point pos, int
         }
     }
     QSqlDatabase::removeDatabase(QString::number(id));
-    lock.unlock();
+    // lock.unlock();
     return ar;
 }
 
 void PureImageCache::deleteOlderTiles(int const& days)
 {
-    if(gtilecache.isEmpty()|gtilecache.isNull())
+    if(gtilecache.isEmpty() || gtilecache.isNull())
         return;
 
     QList<long> add;

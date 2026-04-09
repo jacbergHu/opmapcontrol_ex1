@@ -5,10 +5,15 @@ TEMPLATE  = lib
 
 TARGET    = opmapwidget
 
-DESTDIR      = .
+CONFIG(debug,debug|release){
+	DESTDIR      = $$PWD/bin/debug
+}else{
+	DESTDIR      = $$PWD/bin/release
+}
 UI_DIR       = ./build
 MOC_DIR      = ./build
 OBJECTS_DIR  = ./build
+RCC_DIR      = ./build
 
 INCLUDEPATH += . ./core ./internals ./internals/projections ./mapwidget
 

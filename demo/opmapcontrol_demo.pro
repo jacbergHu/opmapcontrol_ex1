@@ -11,7 +11,7 @@ QT    += widgets
 UI_DIR       = ./build
 MOC_DIR      = ./build
 OBJECTS_DIR  = ./build
-
+RCC_DIR      = ./build
 
 HEADERS += \
     MapWidget.h \
@@ -33,5 +33,12 @@ INCLUDEPATH +=  $$OPMAPCONTROL_DIR \
                 $$OPMAPCONTROL_DIR/core \
                 $$OPMAPCONTROL_DIR/internals \
                 $$OPMAPCONTROL_DIR/mapwidget
-LIBS += -L$$OPMAPCONTROL_DIR/debug -lopmapwidget
+CONFIG(debug,debug|release){
+	DESTDIR = $$OPMAPCONTROL_DIR/bin/debug
+	LIBS += -L$$OPMAPCONTROL_DIR/bin/debug -lopmapwidget
+}else{
+	DESTDIR = $$OPMAPCONTROL_DIR/bin/release
+	LIBS += -L$$OPMAPCONTROL_DIR/bin/release -lopmapwidget
+}
+
 RESOURCES   += $$OPMAPCONTROL_DIR/mapwidget/mapresources.qrc
